@@ -1,152 +1,95 @@
-/* style.css - Linter & Accessibility Friendly */
-
-/* 1. Reset أفضل ويدعم العناصر الزائفة */
+/* style.css */
 *, *::before, *::after { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
+    margin: 0; padding: 0; box-sizing: border-box; 
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; overflow: hidden;
 }
 
-/* 2. تطبيق منع التحديد على واجهة المشغل فقط بدلاً من الموقع بالكامل */
 .player-wrapper {
     position: relative;
-    width: 90vw;
-    max-width: 1200px;
-    aspect-ratio: 16 / 9;
-    border-radius: 16px;
-    overflow: hidden;
+    width: 90vw; max-width: 1200px; aspect-ratio: 16 / 9;
+    border-radius: 16px; overflow: hidden;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     background: #000;
-    -webkit-user-select: none; /* ترتيب صحيح: WebKit أولاً */
-    user-select: none; 
+    -webkit-user-select: none; user-select: none; 
+    cursor: default;
+}
+
+/* إخفاء مؤشر الماوس عندما يكون المشغل في حالة خمول (idle) */
+.player-wrapper.idle {
+    cursor: none;
 }
 
 #yt-iframe {
-    position: absolute;
-    top: -100px; 
-    left: 0;
-    width: 100%;
-    height: calc(100% + 200px); 
-    pointer-events: none; 
-    border: none; /* 3. إضافة border: none صراحةً لتجنب تحذيرات الـ iframe */
+    position: absolute; top: -100px; left: 0;
+    width: 100%; height: calc(100% + 200px); 
+    pointer-events: none; border: none; 
 }
 
-/* تم إصلاح الخطأ المطبعي هنا وإزالة النقطة الزائدة */
 .custom-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    background: var(--glass-bg);
-    -webkit-backdrop-filter: blur(16px); /* ترتيب صحيح: WebKit أولاً */
-    backdrop-filter: blur(16px);
+    position: absolute; bottom: 0; left: 0; width: 100%;
+    padding: 20px; background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
     border-top: 1px solid var(--glass-border);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: flex; flex-direction: column; gap: 15px;
+    
+    /* 1. إجبار شريط التحكم ليكون من اليسار لليمين لإصلاح الشريط المعكوس */
+    direction: ltr; 
+    
+    /* 2. إعدادات الإخفاء التلقائي */
     transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
 }
 
-.player-wrapper:hover .custom-controls,
-.player-wrapper.paused .custom-controls {
+/* يظهر الشريط إذا كان الفيديو متوقفاً، أو إذا كان الماوس يتحرك (ليس idle) */
+.player-wrapper.paused .custom-controls,
+.player-wrapper:hover:not(.idle) .custom-controls {
     transform: translateY(0);
+    opacity: 1;
 }
 
 .progress-container {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
+    width: 100%; height: 6px; background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px; cursor: pointer; position: relative;
 }
 
 .progress-bar {
-    height: 100%;
-    background: var(--primary-color);
-    border-radius: 4px;
-    width: 0%;
+    height: 100%; background: var(--primary-color);
+    border-radius: 4px; width: 0%;
 }
 
 .progress-thumb {
-    position: absolute;
-    top: 50%;
-    left: 0%;
+    position: absolute; top: 50%; left: 0%;
     transform: translate(-50%, -50%) scale(0);
-    width: 14px;
-    height: 14px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    transition: transform 0.2s;
+    width: 14px; height: 14px; background: var(--primary-color);
+    border-radius: 50%; transition: transform 0.2s;
 }
 
 .progress-container:hover .progress-thumb { 
     transform: translate(-50%, -50%) scale(1); 
 }
 
-.controls-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.controls-left, .controls-right { 
-    display: flex; 
-    align-items: center; 
-    gap: 15px; 
-}
+.controls-row { display: flex; justify-content: space-between; align-items: center; }
+.controls-left, .controls-right { display: flex; align-items: center; gap: 15px; }
 
 .control-btn {
-    background: none; 
-    border: none; 
-    color: var(--text-color);
-    font-size: 20px; 
-    cursor: pointer; 
-    padding: 8px;
-    border-radius: 8px; 
-    transition: background 0.3s;
+    background: none; border: none; color: var(--text-color);
+    font-size: 20px; cursor: pointer; padding: 8px;
+    border-radius: 8px; transition: background 0.3s;
 }
-
-.control-btn:hover { 
-    background: var(--control-hover); 
-}
-
-.volume-container { 
-    display: flex; 
-    align-items: center; 
-    gap: 8px; 
-}
-
-input[type="range"] { 
-    accent-color: var(--primary-color); 
-    cursor: pointer; 
-}
-
+.control-btn:hover { background: var(--control-hover); }
+.volume-container { display: flex; align-items: center; gap: 8px; }
+input[type="range"] { accent-color: var(--primary-color); cursor: pointer; }
 .control-select {
-    background: rgba(0, 0, 0, 0.5); 
-    color: #fff; 
-    border: 1px solid var(--glass-border);
-    padding: 5px 10px; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    outline: none;
+    background: rgba(0, 0, 0, 0.5); color: #fff; border: 1px solid var(--glass-border);
+    padding: 5px 10px; border-radius: 6px; cursor: pointer; outline: none;
 }
-
-.time-display { 
-    font-size: 14px; 
-    font-weight: 500; 
-}
+.time-display { font-size: 14px; font-weight: 500; }
