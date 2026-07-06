@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Secure Video Player</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/player.css">
+<link rel="stylesheet" href="css/animations.css">
+
+<meta http-equiv="Content-Security-Policy"
+content="
+default-src 'self' https:;
+img-src * data:;
+media-src *;
+script-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.gstatic.com 'unsafe-inline';
+style-src 'self' 'unsafe-inline';
+frame-src https://www.youtube.com https://www.youtube-nocookie.com;
+">
+
+</head>
+
+<body>
+
+<div id="loader">
+    <div class="loader-ring"></div>
+    <span>جاري تحميل الفيديو...</span>
+</div>
+
+<div id="devtools-warning">
+    <div class="warning-box">
+        <h2>تم إيقاف المشغل</h2>
+        <p>تم اكتشاف أدوات المطور.</p>
+    </div>
+</div>
+
+<div class="app-container">
+
+    <div class="video-container">
+
+        <div class="video-overlay"></div>
+
+        <div id="player"></div>
+
+        <div class="custom-controls">
+
+            <div class="top-controls">
+
+                <div class="video-title">
+                    Secure Video Player
+                </div>
+
+            </div>
+
+            <div class="center-controls">
+
+                <button id="backwardBtn">
+                    ⏪
+                </button>
+
+                <button id="playBtn">
+                    ▶
+                </button>
+
+                <button id="forwardBtn">
+                    ⏩
+                </button>
+
+            </div>
+
+            <div class="bottom-controls">
+
+                <div class="progress-wrapper">
+
+                    <input
+                        type="range"
+                        id="progressBar"
+                        min="0"
+                        max="100"
+                        value="0"
+                    >
+
+                </div>
+
+                <div class="control-row">
+
+                    <div class="left-controls">
+
+                        <button id="muteBtn">
+                            🔊
+                        </button>
+
+                        <input
+                            type="range"
+                            id="volumeBar"
+                            min="0"
+                            max="100"
+                            value="100"
+                        >
+
+                        <span id="currentTime">
+                            00:00
+                        </span>
+
+                        <span>
+                            /
+                        </span>
+
+                        <span id="duration">
+                            00:00
+                        </span>
+
+                    </div>
+
+                    <div class="right-controls">
+
+                        <select id="speedControl">
+
+                            <option value="0.5">
+                                0.5x
+                            </option>
+
+                            <option value="0.75">
+                                0.75x
+                            </option>
+
+                            <option value="1" selected>
+                                1x
+                            </option>
+
+                            <option value="1.25">
+                                1.25x
+                            </option>
+
+                            <option value="1.5">
+                                1.5x
+                            </option>
+
+                            <option value="1.75">
+                                1.75x
+                            </option>
+
+                            <option value="2">
+                                2x
+                            </option>
+
+                        </select>
+
+                        <button id="theaterBtn">
+                            🎬
+                        </button>
+
+                        <button id="fullscreenBtn">
+                            ⛶
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const VIDEO_ID = "PUT_VIDEO_ID_HERE";
+</script>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script src="js/player.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/security.js"></script>
+<script src="js/shortcuts.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
