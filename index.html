@@ -1,186 +1,71 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Secure Video Player</title>
-
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/player.css">
-<link rel="stylesheet" href="css/animations.css">
-
-<meta http-equiv="Content-Security-Policy"
-content="
-default-src 'self' https:;
-img-src * data:;
-media-src *;
-script-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.gstatic.com 'unsafe-inline';
-style-src 'self' 'unsafe-inline';
-frame-src https://www.youtube.com https://www.youtube-nocookie.com;
-">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Secure Player</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com; img-src 'self' data: https:; font-src 'self' data:;">
+    <meta name="referrer" content="no-referrer">
+    
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
-
 <body>
 
-<div id="loader">
-    <div class="loader-ring"></div>
-    <span>جاري تحميل الفيديو...</span>
-</div>
+    <div class="player-wrapper skeleton-loading" id="player-container">
+        <div id="loader" class="premium-loader"></div>
+        
+        <div id="yt-iframe"></div>
 
-<div id="devtools-warning">
-    <div class="warning-box">
-        <h2>تم إيقاف المشغل</h2>
-        <p>تم اكتشاف أدوات المطور.</p>
-    </div>
-</div>
-
-<div class="app-container">
-
-    <div class="video-container">
-
-        <div class="video-overlay"></div>
-
-        <div id="player"></div>
-
-        <div class="custom-controls">
-
-            <div class="top-controls">
-
-                <div class="video-title">
-                    Secure Video Player
-                </div>
-
+        <div class="custom-controls" id="custom-controls">
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-thumb" id="progress-thumb"></div>
             </div>
 
-            <div class="center-controls">
-
-                <button id="backwardBtn">
-                    ⏪
-                </button>
-
-                <button id="playBtn">
-                    ▶
-                </button>
-
-                <button id="forwardBtn">
-                    ⏩
-                </button>
-
-            </div>
-
-            <div class="bottom-controls">
-
-                <div class="progress-wrapper">
-
-                    <input
-                        type="range"
-                        id="progressBar"
-                        min="0"
-                        max="100"
-                        value="0"
-                    >
-
-                </div>
-
-                <div class="control-row">
-
-                    <div class="left-controls">
-
-                        <button id="muteBtn">
-                            🔊
-                        </button>
-
-                        <input
-                            type="range"
-                            id="volumeBar"
-                            min="0"
-                            max="100"
-                            value="100"
-                        >
-
-                        <span id="currentTime">
-                            00:00
-                        </span>
-
-                        <span>
-                            /
-                        </span>
-
-                        <span id="duration">
-                            00:00
-                        </span>
-
+            <div class="controls-row">
+                <div class="controls-left">
+                    <button id="play-pause-btn" class="control-btn" title="تشغيل/إيقاف (Space)">▶</button>
+                    <div class="volume-container">
+                        <button id="mute-btn" class="control-btn" title="كتم الصوت (M)">🔊</button>
+                        <input type="range" id="volume-slider" min="0" max="100" value="100">
                     </div>
-
-                    <div class="right-controls">
-
-                        <select id="speedControl">
-
-                            <option value="0.5">
-                                0.5x
-                            </option>
-
-                            <option value="0.75">
-                                0.75x
-                            </option>
-
-                            <option value="1" selected>
-                                1x
-                            </option>
-
-                            <option value="1.25">
-                                1.25x
-                            </option>
-
-                            <option value="1.5">
-                                1.5x
-                            </option>
-
-                            <option value="1.75">
-                                1.75x
-                            </option>
-
-                            <option value="2">
-                                2x
-                            </option>
-
-                        </select>
-
-                        <button id="theaterBtn">
-                            🎬
-                        </button>
-
-                        <button id="fullscreenBtn">
-                            ⛶
-                        </button>
-
+                    <div class="time-display">
+                        <span id="current-time">00:00</span> / <span id="duration">00:00</span>
                     </div>
-
                 </div>
 
+                <div class="controls-right">
+                    <select id="playback-speed" class="control-select" title="سرعة التشغيل">
+                        <option value="0.25">0.25x</option>
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="1.75">1.75x</option>
+                        <option value="2">2x</option>
+                    </select>
+                    <button id="pip-btn" class="control-btn" title="نافذة عائمة">🪟</button>
+                    <button id="theater-btn" class="control-btn" title="وضع المسرح (T)">🎬</button>
+                    <button id="fullscreen-btn" class="control-btn" title="ملء الشاشة (F)">⛶</button>
+                </div>
             </div>
-
         </div>
-
     </div>
 
-</div>
-
-<script>
-const VIDEO_ID = "PUT_VIDEO_ID_HERE";
-</script>
-
-<script src="https://www.youtube.com/iframe_api"></script>
-
-<script src="js/player.js"></script>
-<script src="js/controls.js"></script>
-<script src="js/security.js"></script>
-<script src="js/shortcuts.js"></script>
-<script src="js/loader.js"></script>
-<script src="js/app.js"></script>
-
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <script src="js/security.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/keyboard.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
