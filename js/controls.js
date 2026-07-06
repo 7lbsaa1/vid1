@@ -1,4 +1,6 @@
-/* controls.js - Linter Friendly */
+/* controls.js */
+let hideControlsTimeout;
+
 const Controls = {
     init: () => {
         const playBtn = document.getElementById('play-pause-btn');
@@ -7,23 +9,49 @@ const Controls = {
         const speedSelect = document.getElementById('playback-speed');
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         const progressContainer = document.getElementById('progress-container');
-        const container = document.getElementById('player-container');
+        
+        // استهداف الحاوية الرئيسية (تأكد أن الـ ID الخاص بها هو player-container)
+        const container = document.getElementById('player-container'); 
 
-        // Play / Pause
+        // نظام الإخفاء التلقائي للشريط السُفلي
+        const resetControlsTimer = () => {
+            container.classList.remove('idle');
+            clearTimeout(hideControlsTimeout);
+            
+            // يبدأ المؤقت فقط إذا كان الفيديو يعمل (Play)
+            if (ytPlayer && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                hideControlsTimeout = setTimeout(() => {
+                    container.classList.add('idle');
+                }, 2500); // يختفي بعد ثانيتين ونصف
+            }
+        };
+
+        // تفعيل الإخفاء عند تحريك الماوس أو اللمس
+        container.addEventListener('mousemove', resetControlsTimer);
+        container.addEventListener('click', resetControlsTimer);
+        container.addEventListener('touchstart', resetControlsTimer);
+        container.addEventListener('mouseleave', () => {
+            if (ytPlayer && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                container.classList.add('idle');
+            }
+        });
+
+        Controls.resetControlsTimer = resetControlsTimer; // نجعلها متاحة للملفات الأخرى
+
+        // تشغيل / إيقاف
         playBtn.addEventListener('click', Controls.togglePlay);
         
-        // Click on screen to play/pause
+        // النقر على الشاشة للتشغيل والإيقاف
         container.addEventListener('click', (e) => {
             if(e.target === container || e.target.classList.contains('custom-controls') === false) {
                 Controls.togglePlay();
             }
         });
 
-        // Volume
+        // الصوت
         volSlider.addEventListener('input', (e) => {
             ytPlayer.setVolume(Number(e.target.value));
             ytPlayer.unMute();
-            // استخدام === مع تحويل القيمة لرقم
             muteBtn.innerText = Number(e.target.value) === 0 ? '🔇' : '🔊';
         });
 
@@ -39,12 +67,12 @@ const Controls = {
             }
         });
 
-        // Speed
+        // السرعة
         speedSelect.addEventListener('change', (e) => {
             ytPlayer.setPlaybackRate(parseFloat(e.target.value));
         });
 
-        // Fullscreen
+        // الشاشة الكاملة
         fullscreenBtn.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 container.requestFullscreen().catch(err => console.log(err));
@@ -53,7 +81,7 @@ const Controls = {
             }
         });
 
-        // Progress Bar Click
+        // النقر على شريط التقدم (أصبح الآن متوافقاً مع LTR بشكل صحيح)
         progressContainer.addEventListener('click', (e) => {
             const rect = progressContainer.getBoundingClientRect();
             const pos = (e.clientX - rect.left) / progressContainer.offsetWidth;
@@ -80,7 +108,7 @@ const Controls = {
         document.getElementById('progress-thumb').style.left = `${percentage}%`;
         document.getElementById('current-time').innerText = Utils.formatTime(currentTime);
         
-        // Save state occasionally
+        // حفظ التوقيت كل 5 ثوانٍ
         if(Math.floor(currentTime) % 5 === 0) Utils.saveProgress(currentTime);
     }
 };
