@@ -1,4 +1,12 @@
-* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+/* style.css - Linter & Accessibility Friendly */
+
+/* 1. Reset أفضل ويدعم العناصر الزائفة */
+*, *::before, *::after { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -9,6 +17,8 @@ body {
     min-height: 100vh;
     overflow: hidden;
 }
+
+/* 2. تطبيق منع التحديد على واجهة المشغل فقط بدلاً من الموقع بالكامل */
 .player-wrapper {
     position: relative;
     width: 90vw;
@@ -18,13 +28,16 @@ body {
     overflow: hidden;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     background: #000;
+    user-select: none; 
+    -webkit-user-select: none;
 }
-/* إخفاء أحداث الفأرة للـ IFrame كي لا يتمكن المستخدم من إيقاف الفيديو من يوتيوب نفسه */
+
 #yt-iframe {
     position: absolute;
-    top: -100px; /* لإخفاء عنوان يوتيوب العلوي */
+    top: -100px; 
     left: 0;
     width: 100%;
-    height: calc(100% + 200px); /* تعويض القص */
+    height: calc(100% + 200px); 
     pointer-events: none; 
+    border: none; /* 3. إضافة border: none صراحةً لتجنب تحذيرات الـ iframe */
 }
