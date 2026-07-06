@@ -1,0 +1,7 @@
+@media (max-width: 768px) {
+    .player-wrapper { width: 100vw; border-radius: 0; }
+    .custom-controls { padding: 10px; gap: 10px; }
+    .control-btn { font-size: 16px; padding: 5px; }
+    .volume-container input { width: 60px; }
+    .time-display { font-size: 12px; }
+}
