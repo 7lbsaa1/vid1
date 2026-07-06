@@ -1,3 +1,4 @@
+/* controls.js - Linter Friendly */
 const Controls = {
     init: () => {
         const playBtn = document.getElementById('play-pause-btn');
@@ -20,9 +21,10 @@ const Controls = {
 
         // Volume
         volSlider.addEventListener('input', (e) => {
-            ytPlayer.setVolume(e.target.value);
+            ytPlayer.setVolume(Number(e.target.value));
             ytPlayer.unMute();
-            muteBtn.innerText = e.target.value == 0 ? '🔇' : '🔊';
+            // استخدام === مع تحويل القيمة لرقم
+            muteBtn.innerText = Number(e.target.value) === 0 ? '🔇' : '🔊';
         });
 
         muteBtn.addEventListener('click', () => {
@@ -81,4 +83,4 @@ const Controls = {
         // Save state occasionally
         if(Math.floor(currentTime) % 5 === 0) Utils.saveProgress(currentTime);
     }
-};js/controls.js
+};
