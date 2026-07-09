@@ -1,16 +1,26 @@
-/* player.js */
+/* js/player.js - المطور والآمن */
 let ytPlayer;
 let updateInterval;
 
+// تأكيد تحميل واجهة API من يوتيوب
 function onYouTubeIframeAPIReady() {
-    Loader.show();
+    if (typeof Loader !== 'undefined') Loader.show();
+    
+    // جلب الـ ID الخاص بالفيديو من الذاكرة اللحظية للصفحة
+    const currentVideoId = window.CUSTOM_VIDEO_ID || (typeof AppSettings !== 'undefined' ? AppSettings.videoId : 'sp4yamTUNrw');
+
     ytPlayer = new YT.Player('yt-iframe', {
         host: 'https://www.youtube-nocookie.com',
-        videoId: AppSettings.videoId,
+        videoId: currentVideoId,
         playerVars: {
-            'playsinline': 1, 'controls': 0, 'rel': 0, 
-            'modestbranding': 1, 'disablekb': 1, 
-            'iv_load_policy': 3, 'fs': 0, 'autoplay': 0
+            'playsinline': 1,
+            'controls': 0,     
+            'rel': 0,          
+            'modestbranding': 1, 
+            'disablekb': 1,    
+            'iv_load_policy': 3, 
+            'fs': 0,
+            'autoplay': 1 // جعلناه يشتغل تلقائياً عند الفتح للتجربة
         },
         events: {
             'onReady': onPlayerReady,
@@ -20,15 +30,26 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady() {
-    Loader.hide();
-    const savedTime = Utils.getSavedProgress();
+    if (typeof Loader !== 'undefined') Loader.hide();
+    
+    // جلب وقت المشاهدة السابق بأمان
+    let savedTime = 0;
+    if (typeof Utils !== 'undefined' && typeof AppSettings !== 'undefined') {
+        savedTime = Utils.getSavedProgress();
+    }
     if (savedTime > 0) {
         ytPlayer.seekTo(savedTime);
     }
-    document.getElementById('duration').innerText = Utils.formatTime(ytPlayer.getDuration());
-    ytPlayer.setVolume(AppSettings.defaultVolume);
-    Controls.init();
-    Keyboard.init();
+    
+    // ضبط الوقت الإجمالي للفيديو
+    const durationEl = document.getElementById('duration');
+    if (durationEl && typeof Utils !== 'undefined') {
+        durationEl.innerText = Utils.formatTime(ytPlayer.getDuration());
+    }
+    
+    // تشغيل أزرار التحكم والـ Keyboard
+    if (typeof Controls !== 'undefined' && typeof Controls.init === 'function') Controls.init();
+    if (typeof Keyboard !== 'undefined' && typeof Keyboard.init === 'function') Keyboard.init();
 }
 
 function onPlayerStateChange(event) {
@@ -36,28 +57,26 @@ function onPlayerStateChange(event) {
     const playBtn = document.getElementById('play-pause-btn');
 
     if (event.data === YT.PlayerState.PLAYING) {
-        container.classList.remove('paused');
-        playBtn.innerText = '⏸';
+        if (container) container.classList.remove('paused');
+        if (playBtn) playBtn.innerText = '⏸';
         startProgressUpdate();
-        
-        // تفعيل مؤقت إخفاء الشريط عند التشغيل
-        if (Controls.resetControlsTimer) Controls.resetControlsTimer(); 
+        if (typeof Controls !== 'undefined' && Controls.resetControlsTimer) Controls.resetControlsTimer(); 
     } else {
-        container.classList.add('paused');
-        container.classList.remove('idle'); // إظهار الشريط فوراً عند الإيقاف المؤقت
-        playBtn.innerText = '▶';
-        stopProgressUpdate();
-        
-        if (event.data === YT.PlayerState.ENDED) {
-            alert("انتهى الفيديو، نتمنى لك التوفيق في الامتحان!");
+        if (container) {
+            container.classList.add('paused');
+            container.classList.remove('idle');
         }
+        if (playBtn) playBtn.innerText = '▶';
+        stopProgressUpdate();
     }
 }
 
 function startProgressUpdate() {
     function update() {
-        if (ytPlayer && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
-            Controls.updateProgressBar();
+        if (ytPlayer && typeof ytPlayer.getPlayerState === 'function' && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+            if (typeof Controls !== 'undefined' && typeof Controls.updateProgressBar === 'function') {
+                Controls.updateProgressBar();
+            }
             updateInterval = requestAnimationFrame(update);
         }
     }
