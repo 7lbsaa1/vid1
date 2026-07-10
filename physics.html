@@ -3,38 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاضرة الفيزياء - المراجعة النهائية</title>
+    <title>Egyptian Project - منصة حلبسة</title>
     
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com; img-src 'self' data: https:; font-src 'self' data:;">
-    <meta name="referrer" content="no-referrer">
-    
-    <link class="js-theme" rel="stylesheet" href="css/themes.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/player.css">
     <link rel="stylesheet" href="css/responsive.css">
 
-    <script>
-        window.CUSTOM_VIDEO_ID = 'sp4yamTUNrw'; // معرف فيديو الفيزياء
-        window.CUSTOM_STORAGE_KEY = 'vid_progress_sp4yamTUNrw'; // ذاكرة تخزين منفصلة للفيزياء
-    </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            /* منع تحديد النصوص في الصفحة لزيادة الحماية */
+            user-select: none; 
+            -webkit-user-select: none;
+        }
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .skeleton-loading {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s infinite linear;
+        }
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-    <div class="player-wrapper skeleton-loading" id="player-container">
-        <div id="loader" class="premium-loader"></div>
+    <div id="player-container" class="player-wrapper skeleton-loading">
         
+        <div id="loader">جاري تهيئة المشغل...</div>
         <div id="yt-iframe"></div>
 
-        <div class="custom-controls" id="custom-controls">
-            <div class="progress-container" id="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
-                <div class="progress-thumb" id="progress-thumb"></div>
+        <div class="custom-controls" dir="ltr">
+            
+            <div id="progress-container" class="progress-container">
+                <div id="progress-bar" class="progress-bar">
+                    <div id="progress-thumb" class="progress-thumb"></div>
+                </div>
             </div>
 
             <div class="controls-row">
                 <div class="controls-left">
-                    <button id="play-pause-btn" class="control-btn" title="تشغيل/إيقاف (Space)">▶</button>
+                    <button id="play-pause-btn" class="control-btn" title="تشغيل / إيقاف (K)">▶</button>
                     <div class="volume-container">
                         <button id="mute-btn" class="control-btn" title="كتم الصوت (M)">🔊</button>
                         <input type="range" id="volume-slider" min="0" max="100" value="100">
@@ -46,32 +71,53 @@
 
                 <div class="controls-right">
                     <select id="playback-speed" class="control-select" title="سرعة التشغيل">
-                        <option value="0.25">0.25x</option>
                         <option value="0.5">0.5x</option>
-                        <option value="0.75">0.75x</option>
                         <option value="1" selected>1x</option>
-                        <option value="1.25">1.25x</option>
                         <option value="1.5">1.5x</option>
-                        <option value="1.75">1.75x</option>
                         <option value="2">2x</option>
                     </select>
-                    <button id="pip-btn" class="control-btn" title="نافذة عائمة">🪟</button>
-                    <button id="theater-btn" class="control-btn" title="وضع المسرح (T)">🎬</button>
+                    <button id="pip-btn" class="control-btn" title="صورة في صورة">⛶</button>
+                    <button id="theater-btn" class="control-btn" title="وضع المسرح (T)">🎦</button>
                     <button id="fullscreen-btn" class="control-btn" title="ملء الشاشة (F)">⛶</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+        // 1. معرف الفيديو الجديد
+        window.CUSTOM_VIDEO_ID = 'C4UKWmUFBxQ'; 
+        
+        // تغيير مفتاح الذاكرة ليبدأ العد من جديد مع الفيديو الجديد
+        window.CUSTOM_STORAGE_KEY = 'vid_progress_C4UKWmUFBxQ';
+
+        // 2. كود الحماية الصارم: منع أزرار فحص العنصر والمطور
+        document.addEventListener('keydown', function(e) {
+            // منع زر F12
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            // منع Ctrl+Shift+I و Ctrl+Shift+J و Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+                return false;
+            }
+            // منع عرض مصدر الصفحة Ctrl+U
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+
     <script src="https://www.youtube.com/iframe_api"></script>
-    
-    <script src="js/security.js"></script>
     <script src="js/utils.js"></script>
-    <script src="js/settings.js"></script>
     <script src="js/loader.js"></script>
     <script src="js/controls.js"></script>
     <script src="js/keyboard.js"></script>
     <script src="js/player.js"></script>
     <script src="js/app.js"></script>
+
 </body>
 </html>
