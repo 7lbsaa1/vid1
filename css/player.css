@@ -1,15 +1,15 @@
-/* css/player.css - Premium Secure Player Styles */
+/* css/player.css - Premium Secure Player (Stable Version) */
 
 :root {
     --primary-color: #38bdf8;
     --bg-color: #0f172a;
     --text-color: #f8fafc;
-    --glass-bg: rgba(15, 23, 42, 0.65);
+    --glass-bg: rgba(15, 23, 42, 0.75);
     --glass-border: rgba(255, 255, 255, 0.08);
-    --control-hover: rgba(255, 255, 255, 0.1);
+    --control-hover: rgba(255, 255, 255, 0.12);
 }
 
-/* حاوية المشغل الرئيسية */
+/* حاوية المشغل الرئيسية مع ضمان الأبعاد الكاملة 16:9 */
 .player-wrapper {
     position: relative;
     width: 95vw;
@@ -17,29 +17,30 @@
     aspect-ratio: 16 / 9;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
     background: #000;
     -webkit-user-select: none;
     user-select: none;
     cursor: default;
-    transition: box-shadow 0.3s ease;
+    display: block; /* ضمان ظهور العنصر بالكامل */
 }
 
-/* إخفاء مؤشر الماوس تماماً عند تشغيل الفيديو وعدم تحريك الماوس (وضع الخمول) */
+/* إخفاء مؤشر الماوس تماماً عند تشغيل الفيديو وعدم تحريك الماوس */
 .player-wrapper.idle {
-    cursor: none;
+    cursor: none !important;
 }
 
-/* تمديد وإخفاء أطراف آيفريم يوتيوب لمنع ظهور اللوجو وعناصر التحكم الافتراضية */
+/* تمديد وإخفاء أطراف آيفريم يوتيوب لمنع ظهور اللوجو وعناصر التحكم */
 #yt-iframe {
     position: absolute;
-    top: -60px; /* قص الشريط العلوي الأسود */
+    top: -60px; /* قص الشريط العلوي */
     left: 0;
     width: 100%;
     height: calc(100% + 120px); /* تعويض مسافة القص */
-    pointer-events: none; /* منع النقر المباشر على يوتيوب */
+    pointer-events: none; /* حظر النقر المباشر */
     border: none;
-    transform: scale(1.01); /* إخفاء أي حواف بيضاء دقيقة */
+    transform: scale(1.01);
+    z-index: 1;
 }
 
 /* شريط التحكم الزجاجي (Glassmorphism Controls) */
@@ -56,28 +57,34 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    z-index: 10;
+    z-index: 10; /* جعل الأزرار دائماً في المقدمة فوق الفيديو */
     
-    /* إجبار الاتجاه من اليسار لليمين LTR لمنع انعكاس شريط التقدم والصوت */
+    /* إجبار الاتجاه من اليسار لليمين LTR لإصلاح الشريط المعكوس */
     direction: ltr !important; 
     
-    /* تأثيرات الحركة عند الاختفاء والظهور التلقائي */
+    /* تأثيرات الحركة عند الاختفاء والظهور */
     transform: translateY(0);
     opacity: 1;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
 
-/* إخفاء شريط التحكم السُفلي تلقائياً فقط إذا كان الفيديو يعمل (وليسpaused) وكان المستخدم في حالة خمول */
-.player-wrapper.idle:not(.paused) .custom-controls {
+/* عندما يكون المشغل في وضع الخمول (الفيديو يعمل والماوس ثابت) يختفي الشريط */
+.player-wrapper.idle .custom-controls {
     transform: translateY(100%);
     opacity: 0;
+}
+
+/* عندما يكون الفيديو متوقفاً (Paused) يتم إجبار شريط التحكم على الظهور دائماً حتى لو تحرك الماوس */
+.player-wrapper.paused .custom-controls {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
 }
 
 /* شريط التقدم الفعلي */
 .progress-container {
     width: 100%;
     height: 6px;
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 100px;
     cursor: pointer;
     position: relative;
@@ -92,7 +99,7 @@
     height: 100%;
     background: linear-gradient(90deg, var(--primary-color), #0ea5e9);
     border-radius: 100px;
-    width: 0%; /* يتم تحديثه عبر الجافا سكريبت */
+    width: 0%; 
     position: relative;
 }
 
@@ -100,7 +107,7 @@
 .progress-thumb {
     position: absolute;
     top: 50%;
-    left: 0%; /* يتم تحديثه عبر الجافا سكريبت */
+    left: 0%; 
     transform: translate(-50%, -50%) scale(0);
     width: 14px;
     height: 14px;
@@ -175,7 +182,7 @@
 
 /* قائمة اختيار سرعة التشغيل */
 .control-select {
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(15, 23, 42, 0.85);
     color: var(--text-color);
     border: 1px solid var(--glass-border);
     padding: 5px 12px;
