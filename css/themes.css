@@ -1,17 +1,51 @@
+/* css/themes.css - Unified Dark Theme & Global Tokens */
+
 :root[data-theme="dark"] {
-    --bg-color: #0f0f11;
-    --text-color: #ffffff;
-    --primary-color: #e50914; /* Netflix Red */
-    --glass-bg: rgba(15, 15, 17, 0.65);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --control-hover: rgba(255, 255, 255, 0.2);
+    /* الألوان الأساسية */
+    --primary-color: #38bdf8;        /* أزرق سماوي احترافي للاستكمال والشريط */
+    --primary-hover: #0ea5e9;        /* درجة أغمق عند التمرير */
+    --bg-color: #0b0f19;             /* خلفية داكنة جداً ومريحة للعين */
+    --text-color: #f8fafc;           /* لون النصوص الرئيسي الأبيض الناعم */
+    --text-muted: #64748b;           /* لون النصوص الثانوية الرمادي */
+    
+    /* إعدادات تأثير الزجاج (Glassmorphism) */
+    --glass-bg: rgba(15, 23, 42, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --control-hover: rgba(255, 255, 255, 0.12);
+    
+    /* تدرجات ألوان للبطاقات والعناوين في الصفحة الرئيسية */
+    --card-bg: rgba(30, 41, 59, 0.4);
+    --card-hover-border: rgba(56, 189, 248, 0.4);
+    --gradient-title: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+    
+    /* تظليل احترافي للعناصر */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
 }
 
-:root[data-theme="light"] {
-    --bg-color: #f5f5f7;
-    --text-color: #1d1d1f;
-    --primary-color: #0071e3; /* Apple Blue */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(0, 0, 0, 0.1);
-    --control-hover: rgba(0, 0, 0, 0.05);
+/* إعدادات عامة لتطبيق الثيم على الجسم والصفحات */
+html, body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* تخصيص شريط التمرير الخاص بالمتصفح (Scrollbar) ليتماشى مع الثيم المظلم */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }
