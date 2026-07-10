@@ -1,7 +1,103 @@
-@media (max-width: 768px) {
-    .player-wrapper { width: 100vw; border-radius: 0; }
-    .custom-controls { padding: 10px; gap: 10px; }
-    .control-btn { font-size: 16px; padding: 5px; }
-    .volume-container input { width: 60px; }
-    .time-display { font-size: 12px; }
+/* css/responsive.css - Fully Responsive Layout Adjustments */
+
+/* للشاشات المتوسطة والأجهزة اللوحية (Tablets) أقل من 768 بكسل */
+@media screen and (max-width: 768px) {
+    .player-wrapper {
+        width: 98vw;
+        border-radius: 12px;
+    }
+
+    .custom-controls {
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .controls-left, .controls-right {
+        gap: 12px;
+    }
+
+    .control-btn {
+        font-size: 18px;
+        padding: 5px 8px;
+    }
+
+    #volume-slider {
+        width: 60px;
+    }
+    
+    .volume-container:hover #volume-slider {
+        width: 70px;
+    }
+
+    .time-display {
+        font-size: 13px;
+    }
+}
+
+/* للشاشات الصغيرة جداً والهواتف الذكية (Mobile Phones) أقل من 480 بكسل */
+@media screen and (max-width: 480px) {
+    .player-wrapper {
+        width: 100vw;
+        border-radius: 0px; /* ملء الشاشة بالكامل على الهواتف */
+    }
+
+    .custom-controls {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    /* تقليل المسافات بين عناصر التحكم لضمان عدم خروجها من الشاشة */
+    .controls-row {
+        gap: 5px;
+    }
+
+    .controls-left, .controls-right {
+        gap: 8px;
+    }
+
+    .control-btn {
+        font-size: 16px;
+        padding: 4px 6px;
+    }
+
+    /* إخفاء شريط التحكم بالصوت على الهواتف والاعتماد على زر الكتم فقط لتوفير مساحة */
+    #volume-slider {
+        display: none !important;
+    }
+
+    /* تصغير حجم قائمة اختيار السرعة وتقليص الحواف */
+    .control-select {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+
+    .time-display {
+        font-size: 11px;
+        letter-spacing: 0px;
+    }
+
+    /* إخفاء بعض الأزرار الثانوية على الهواتف إذا كانت المساحة ضيقة جداً */
+    #theater-btn, #pip-btn {
+        display: none !important;
+    }
+}
+
+/* معالجة وضعية الشاشة الأفقية على الهواتف (Landscape Mode) */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+    .player-wrapper {
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        border-radius: 0;
+    }
+
+    #yt-iframe {
+        top: -40px;
+        height: calc(100% + 80px);
+    }
+
+    .custom-controls {
+        padding: 8px 15px;
+        gap: 6px;
+    }
 }
