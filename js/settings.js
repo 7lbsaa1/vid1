@@ -7,5 +7,5 @@ const AppSettings = {
     saveProgress: true,
     
     // تخصيص مفتاح الذاكرة لكل فيديو بناءً على الـ ID الخاص به
-    storageKey: window.CUSTOM_STORAGE_KEY || 'vid_progress_sp4yamTUNrw'
+    storageKey: window.CUSTOM_STORAGE_KEY || 'RYPyrVDTZT0'
 };
