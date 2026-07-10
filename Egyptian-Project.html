@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="css/responsive.css">
 
     <style>
-        /* تنسيق سريع لشاشة التحميل والشكل العام للصفحة */
         body {
             display: flex;
             justify-content: center;
@@ -18,6 +17,9 @@
             min-height: 100vh;
             margin: 0;
             background-color: var(--bg-color);
+            /* منع تحديد النصوص في الصفحة لزيادة الحماية */
+            user-select: none; 
+            -webkit-user-select: none;
         }
         #loader {
             position: absolute;
@@ -40,15 +42,15 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div id="player-container" class="player-wrapper skeleton-loading">
         
         <div id="loader">جاري تهيئة المشغل...</div>
-
         <div id="yt-iframe"></div>
 
-        <div class="custom-controls">
+        <div class="custom-controls" dir="ltr">
+            
             <div id="progress-container" class="progress-container">
                 <div id="progress-bar" class="progress-bar">
                     <div id="progress-thumb" class="progress-thumb"></div>
@@ -83,15 +85,33 @@
     </div>
 
     <script>
-        // قم بتغيير هذا الـ ID إلى الـ ID الحقيقي الخاص بفيديو Egyptian Project
-        window.CUSTOM_VIDEO_ID = 'sp4yamTUNrw'; 
+        // 1. معرف الفيديو الجديد
+        window.CUSTOM_VIDEO_ID = 'C4UKWmUFBxQ'; 
         
-        // مفتاح الذاكرة (مهم جداً لكي لا يختلط وقت هذا الفيديو مع فيديو الفيزياء)
-        window.CUSTOM_STORAGE_KEY = 'vid_progress_egyptian_project';
+        // تغيير مفتاح الذاكرة ليبدأ العد من جديد مع الفيديو الجديد
+        window.CUSTOM_STORAGE_KEY = 'vid_progress_C4UKWmUFBxQ';
+
+        // 2. كود الحماية الصارم: منع أزرار فحص العنصر والمطور
+        document.addEventListener('keydown', function(e) {
+            // منع زر F12
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            // منع Ctrl+Shift+I و Ctrl+Shift+J و Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+                return false;
+            }
+            // منع عرض مصدر الصفحة Ctrl+U
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+        });
     </script>
 
     <script src="https://www.youtube.com/iframe_api"></script>
-    
     <script src="js/utils.js"></script>
     <script src="js/loader.js"></script>
     <script src="js/controls.js"></script>
