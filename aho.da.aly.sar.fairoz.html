@@ -24,11 +24,14 @@
             user-select: none; 
             -webkit-user-select: none;
             overflow: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         #player-container {
             position: relative;
             overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         #loader {
@@ -55,13 +58,13 @@
             100% { background-position: -200% 0; }
         }
         
-        /* 🛡️ حجب كلي لشعار يوتيوب: زيادة التكبير لدفعه خلف الشريط السفلي المصمت */
+        /* 🛡️ حجب كلي لشعار يوتيوب المائي */
         #yt-iframe {
             transform: scale(1.08) !important;
             pointer-events: none !important; 
         }
 
-        /* 🎯 الغلاف الذكي الحاحب لشعار يوتيوب قبل التشغيل */
+        /* 🎯 الغلاف الذكي لحجب الشعار قبل التشغيل */
         #smart-video-cover {
             position: absolute;
             top: 0;
@@ -97,24 +100,57 @@
             pointer-events: none !important;
         }
 
-        /* 💾 العودة للشكل القديم المصمت 100% لمنع تسريب شعار يوتيوب نهائياً */
+        /* 💾 لوحة التحكم المصمتة 100% لحجب الشعار المائي المتسرب خلف الأزرار */
         .custom-controls {
-            background: #0f172a !important; /* لون داكن مصمت تماماً يحجب ما خلفه */
+            background: #0f172a !important; 
             opacity: 1 !important;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.4);
+            padding: 16px 20px;
         }
 
-        /* ⏱️ إصلاح تايمر الوقت ومنع انعكاس الأرقام في واجهة الـ RTL */
+        /* 🔘 تصميم أزرار الأيقونات الاحترافية الموحدة */
+        .control-btn {
+            background: transparent;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #38bdf8;
+        }
+
+        .control-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* ⏱️ ضبط التايمر لمنع انعكاس التوجيه الرقمي */
         .time-display {
             direction: ltr !important;
             display: inline-flex !important;
             align-items: center;
             gap: 4px;
             font-family: monospace, sans-serif;
+            color: #94a3b8;
             user-select: none;
         }
 
-        /* 👑 تصميم القوائم المنسدلة الحديثة (Premium Dropdowns) */
+        /* 🎯 إزاحة زر ملء الشاشة حبة لليسار ليظهر كاملاً ولا ينقطع عند الحافة */
+        #fullscreen-btn {
+            margin-right: 10px; /* يدفعه لليسار بعيداً عن زاوية الحافة اليمنى لشريط ltr */
+        }
+
+        /* 👑 تنسيق قوائم الـ Premium المنسدلة */
         .premium-dropdown-wrapper {
             position: relative;
             display: inline-block;
@@ -122,22 +158,22 @@
 
         .premium-dropdown-menu {
             position: absolute;
-            bottom: 45px;
+            bottom: 48px;
             left: 50%;
             transform: translateX(-50%) scale(0.95);
             background: #1e293b;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            padding: 4px;
-            min-width: 110px;
+            padding: 5px;
+            min-width: 115px;
             display: flex;
             flex-direction: column;
             gap: 2px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.55);
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s, visibility 0.2s;
             z-index: 40;
         }
 
@@ -149,7 +185,7 @@
         }
 
         .premium-dropdown-item {
-            padding: 6px 12px;
+            padding: 7px 12px;
             color: #94a3b8;
             font-size: 0.85rem;
             border-radius: 6px;
@@ -162,12 +198,12 @@
         }
 
         .premium-dropdown-item:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             color: #fff;
         }
 
         .premium-dropdown-item.selected {
-            color: var(--primary-color, #38bdf8);
+            color: #38bdf8;
             font-weight: bold;
             background: rgba(56, 189, 248, 0.1);
         }
@@ -185,7 +221,7 @@
 
     <div id="player-container" class="player-wrapper skeleton-loading">
         
-        <!-- 🖼️ الغلاف الذكي للحجب البدئي -->
+        <!-- الغلاف الذكي المخصص -->
         <div id="smart-video-cover">
             <img src="play-button.png" class="custom-play-img" alt="تشغيل">
         </div>
@@ -193,7 +229,7 @@
         <div id="loader">جاري تهيئة مسار الصوت...</div>
         <div id="yt-iframe"></div>
 
-        <!-- شريط التحكم السفلي (بالشكل القديم والاتجاه الصارم LTR للمشغلات العالمية) -->
+        <!-- شريط أزرار التحكم الكلاسيكي المصمت بتوجيه LTR ذكي -->
         <div class="custom-controls" dir="ltr">
             
             <div id="progress-container" class="progress-container">
@@ -203,23 +239,25 @@
             </div>
 
             <div class="controls-row">
+                <!-- أزرار الجانب الأيسر -->
                 <div class="controls-left">
                     <button id="play-pause-btn" class="control-btn" title="تشغيل / إيقاف (K)">▶</button>
                     <div class="volume-container">
                         <button id="mute-btn" class="control-btn" title="كتم الصوت (M)">🔊</button>
                         <input type="range" id="volume-slider" min="0" max="100" value="100">
                     </div>
-                    <!-- العداد الذكي المصلح والمحاذى بانتظام -->
+                    
                     <div class="time-display">
                         <span id="current-time">00:00</span> / <span id="duration">00:00</span>
                     </div>
                 </div>
 
+                <!-- أزرار الجانب الأيمن المطورة -->
                 <div class="controls-right">
                     
-                    <!-- 💎 زر الجودة الحديث (Quality) -->
+                    <!-- 💎 زر الجودة (Quality) -->
                     <div class="premium-dropdown-wrapper">
-                        <button id="quality-custom-btn" class="control-btn" title="الجودة" style="width: auto; padding: 0 8px; font-size: 0.8rem; font-weight: bold;">
+                        <button id="quality-custom-btn" class="control-btn" title="الجودة" style="width: auto; padding: 0 10px; font-size: 0.8rem; font-weight: bold; letter-spacing: 0.3px;">
                             Quality
                         </button>
                         <div id="quality-dropdown-menu" class="premium-dropdown-menu">
@@ -231,9 +269,11 @@
                         </div>
                     </div>
 
-                    <!-- 🏎️ زر وقائمة السرعة المتطورة المخصصة (Premium Speed) -->
+                    <!-- 🏎️ إعادة شكل السرعة الاحترافي (Premium Speed SVG) -->
                     <div class="premium-dropdown-wrapper">
-                        <button id="speed-custom-btn" class="control-btn" title="سرعة التشغيل">⚡</button>
+                        <button id="speed-custom-btn" class="control-btn" title="سرعة التشغيل">
+                            <svg viewBox="0 0 24 24"><path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 19a2 2 0 0 0 1.72 1h13.85a2 2 0 0 0 1.74-1 10 10 0 0 0-.28-10.43zM10.59 15.41a2 2 0 1 0 2.83-2.83 2 2 0 0 0-2.83 2.83zm6.26-6.26l-3.7 3.7a4 4 0 0 1-1.42 1.42l-3.7 3.7 1.42 1.42 3.7-3.7a4 4 0 0 1 1.42-1.42l3.7-3.7-1.42-1.42z"/></svg>
+                        </button>
                         <div id="speed-dropdown-menu" class="premium-dropdown-menu">
                             <div class="premium-dropdown-item" data-speed="0.25">0.25x <span class="check-icon">✓</span></div>
                             <div class="premium-dropdown-item" data-speed="0.5">0.5x <span class="check-icon">✓</span></div>
@@ -246,7 +286,7 @@
                         </div>
                     </div>
 
-                    <!-- الـ Select الخارجي المخفي تماماً لضمان عدم كسر السكريبتات المرتبطة به -->
+                    <!-- عنصر مخفي ومحفوظ لربط ملفات الـ JS الخارجية بكفاءة -->
                     <select id="playback-speed" style="display: none;">
                         <option value="0.25">0.25x</option>
                         <option value="0.5">0.5x</option>
@@ -258,19 +298,21 @@
                         <option value="2">2x</option>
                     </select>
 
-                    <!-- تم إزالة زر النافذة العائمة وزر المسرح بنجاح وثبات -->
-                    <button id="fullscreen-btn" class="control-btn" title="ملء الشاشة (F)">⛶</button>
+                    <!-- ⛶ زر ملء الشاشة المطور مع الإزاحة الجانبية الذكية لليسار -->
+                    <button id="fullscreen-btn" class="control-btn" title="ملء الشاشة (F)">
+                        <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- الإعدادات والربط البرمجي السلس -->
+    <!-- التحكم والمزامنة البرمجية المستقرة -->
     <script>
         window.CUSTOM_VIDEO_ID = 'aoYDq-meq1w'; 
         window.CUSTOM_STORAGE_KEY = 'vid_progress_aho_da_elsar_fairoz';
 
-        // تفعيل تشغيل الغلاف الذكي
+        // تشغيل الغلاف وإخفائه
         document.getElementById('smart-video-cover').addEventListener('click', function() {
             this.classList.add('fade-out-cover');
 
@@ -283,7 +325,7 @@
             if (playPauseBtn) { playPauseBtn.textContent = '⏸'; }
         });
 
-        // مزامنة حالة الأزرار النصية الكلاسيكية عند النقر
+        // مزامنة أزرار التشغيل التقليدية
         document.getElementById('play-pause-btn').addEventListener('click', function() {
             setTimeout(() => {
                 const mainPlayer = window.player || (typeof player !== 'undefined' ? player : null);
@@ -294,7 +336,7 @@
             }, 60);
         });
 
-        /* 🔄 تشغيل القوائم المنسدلة الذكية المضافة حديثاً */
+        /* 🔄 منطق عمل وتشغيل القوائم المنسدلة الاحترافية */
         const speedBtn = document.getElementById('speed-custom-btn');
         const speedMenu = document.getElementById('speed-dropdown-menu');
         const qualityBtn = document.getElementById('quality-custom-btn');
@@ -318,7 +360,7 @@
             qualityMenu.classList.remove('active');
         });
 
-        // تشغيل واختيار السرعات المخصصة ومزامنتها
+        // تطبيق تغيير السرعة
         speedMenu.querySelectorAll('.premium-dropdown-item').forEach(item => {
             item.addEventListener('click', function() {
                 speedMenu.querySelectorAll('.premium-dropdown-item').forEach(i => i.classList.remove('selected'));
@@ -337,7 +379,7 @@
             });
         });
 
-        // تشغيل واختيار الجودة المطلوبة
+        // تطبيق تغيير الجودة
         qualityMenu.querySelectorAll('.premium-dropdown-item').forEach(item => {
             item.addEventListener('click', function() {
                 qualityMenu.querySelectorAll('.premium-dropdown-item').forEach(i => i.classList.remove('selected'));
@@ -351,7 +393,7 @@
             });
         });
 
-        /* 🛡️ حماية الكود المصدري ومنع اختصارات الفحص */
+        /* 🛡️ نظام الحماية المطور للأكواد البرمجية */
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || e.keyCode === 123) {
