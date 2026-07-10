@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أهو ده اللي صار - فيروز</title>
     
+    <!-- أيقونة التصفح المتوافقة مع الموقع الرئيسي -->
+    <link rel="icon" href="fav.jpg" type="image/jpeg">
+    
     <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/player.css">
     <link rel="stylesheet" href="css/responsive.css">
@@ -19,7 +22,16 @@
             background-color: var(--bg-color);
             user-select: none; 
             -webkit-user-select: none;
+            overflow: hidden;
         }
+
+        #player-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
         #loader {
             position: absolute;
             top: 50%;
@@ -30,21 +42,65 @@
             font-size: 1.2rem;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            pointer-events: none;
         }
+
         .skeleton-loading {
             background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
             background-size: 200% 100%;
             animation: skeleton-shimmer 1.5s infinite linear;
         }
+
         @keyframes skeleton-shimmer {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
         
-        /* إخفاء الشعار المائي ليوتيوب */
+        /* تكبير طفيف ومخفي لإبعاد هوامش شعار يوتيوب المائي أثناء التشغيل */
         #yt-iframe {
             transform: scale(1.05) !important;
             pointer-events: none !important; 
+        }
+
+        /* 🎯 الغلاف الذكي المخصص لحجب شعار يوتيوب قبل البدء */
+        #smart-video-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* استخدام صورة بوستر الفيديو الأصلية كخلفية للتمويه الذكي */
+            background-image: url('https://img.youtube.com/vi/aoYDq-meq1w/maxresdefault.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 30; /* أعلى من الـ iframe والـ loader لضمان الحجب الكامل */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s;
+        }
+
+        /* تنسيق زر التشغيل الخاص بك */
+        #smart-video-cover .custom-play-img {
+            width: 85px;
+            height: 85px;
+            object-fit: contain;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
+            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.65));
+        }
+
+        /* تأثير حركي احترافي عند حرك الماوس فوق الغلاف */
+        #smart-video-cover:hover .custom-play-img {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.6)) drop-shadow(0 8px 25px rgba(0, 0, 0, 0.8));
+        }
+
+        /* فئة لإخفاء الغلاف بانسيابية */
+        .fade-out-cover {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
@@ -52,9 +108,15 @@
 
     <div id="player-container" class="player-wrapper skeleton-loading">
         
+        <!-- 🖼️ الغلاف الذكي الحاحب لشعار يوتيوب البدئي -->
+        <div id="smart-video-cover">
+            <img src="play-button.png" class="custom-play-img" alt="تشغيل الفيديو">
+        </div>
+
         <div id="loader">جاري تهيئة مسار الصوت...</div>
         <div id="yt-iframe"></div>
 
+        <!-- شريط التحكم بتوجيه LTR -->
         <div class="custom-controls" dir="ltr">
             
             <div id="progress-container" class="progress-container">
@@ -92,6 +154,7 @@
         </div>
     </div>
 
+    <!-- الإعدادات والحماية -->
     <script>
         // 1. المعرف الخاص بأغنية فيروز
         window.CUSTOM_VIDEO_ID = 'aoYDq-meq1w'; 
@@ -99,7 +162,26 @@
         // 2. ذاكرة حفظ مسار أغنية فيروز
         window.CUSTOM_STORAGE_KEY = 'vid_progress_aho_da_elsar_fairoz';
 
-        // 3. نظام منع الاختصارات وأدوات المطور
+        // 3. تشغيل الأغنية برمجياً وإخفاء الغلاف الذكي عند النقر عليه
+        document.getElementById('smart-video-cover').addEventListener('click', function() {
+            // إضافة فئة تفعيل تأثير الاختفاء للغلاف المخصص
+            this.classList.add('fade-out-cover');
+
+            // إعطاء أمر التشغيل التلقائي لمشغل يوتيوب المدمج عبر الـ API الخاص بـ js/player.js
+            if (window.player && typeof window.player.playVideo === 'function') {
+                window.player.playVideo();
+            } else if (typeof player !== 'undefined' && typeof player.playVideo === 'function') {
+                player.playVideo();
+            }
+
+            // تعديل أيقونة زر التحكم السفلي ليصبح إيقاف مؤقت تلقائياً
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            if (playPauseBtn) {
+                playPauseBtn.textContent = '⏸';
+            }
+        });
+
+        // 4. نظام منع الاختصارات وأدوات المطور الاحترافي المتكامل
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F12' || e.keyCode === 123) {
                 e.preventDefault();
@@ -116,6 +198,7 @@
         });
     </script>
 
+    <!-- استدعاء المكتبة والسكريبتات الأساسية للمشغل المحمي الخاص بك -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="js/utils.js"></script>
     <script src="js/loader.js"></script>
