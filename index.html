@@ -3,176 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة حلبسة التعليمية - الصفحة الرئيسية</title>
+    <title>الرئيسية | منصة حلبسة الرقمية</title>
     
     <link rel="stylesheet" href="css/themes.css">
     
     <style>
-        /* تنسيقات خاصة بالصفحة الرئيسية لتبدو احترافية */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: var(--bg-color, #0f172a);
-            color: var(--text-color, #f8fafc);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin: 0;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% -20%, #1e293b, transparent 50%);
         }
 
-        .main-container {
-            width: 100%;
-            max-width: 1000px;
+        .header {
             text-align: center;
+            margin-bottom: 60px;
         }
 
-        .main-title {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 800;
-            background: linear-gradient(to left, var(--primary-color, #38bdf8), #a855f7);
+        .header h1 {
+            background: var(--gradient-title);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: transparent;
+            font-size: 3rem;
+            margin-bottom: 10px;
         }
 
-        .main-subtitle {
+        .header p {
+            color: var(--text-muted);
             font-size: 1.1rem;
-            color: #94a3b8;
-            margin-bottom: 40px;
         }
 
-        /* شبكة عرض الفيديوهات */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            width: 100%;
-        }
-
-        /* بطاقة الفيديو (Card) */
-        .video-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
+        .cards-grid {
             display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-        }
-
-        .video-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary-color, #38bdf8);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        /* غلاف الفيديو الافتراضي أو الصورة المصغرة */
-        .card-thumbnail {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background: #1e293b;
-            display: flex;
-            align-items: center;
+            gap: 30px;
             justify-content: center;
-            position: relative;
-        }
-
-        .card-thumbnail img {
+            flex-wrap: wrap;
+            max-width: 1000px;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
-        .play-icon-overlay {
-            position: absolute;
-            font-size: 2.5rem;
-            color: #fff;
-            opacity: 0.6;
-            transition: opacity 0.3s, transform 0.3s;
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px 20px;
+            width: 280px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
         }
 
-        .video-card:hover .play-icon-overlay {
-            opacity: 1;
-            transform: scale(1.1);
+        .card:hover {
+            border-color: var(--card-hover-border);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.15);
+            background: rgba(30, 41, 59, 0.7);
         }
 
-        /* تفاصيل البطاقة */
-        .card-info {
-            padding: 20px;
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex-grow: 1;
+        .card-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.3));
         }
 
-        .video-tag {
-            align-self: flex-start;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary-color, #38bdf8);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
         }
 
-        .video-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            line-height: 1.4;
-        }
-
-        .video-desc {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            line-height: 1.5;
+        .card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <h1 class="main-title">منصة حلبسة الرقمية</h1>
-        <p class="main-subtitle">اختر المحاضرة أو الفيديو المراد تشغيله في البيئة الآمنة:</p>
+    <div class="header">
+        <h1>منصة 7lbsaa الرقمية</h1>
+        <p>اختر المحتوى للبدء في تجربة العرض والموسيقى المخصصة</p>
+    </div>
 
-        <div class="video-grid">
-            
-            <a href="physics.html" class="video-card">
-                <div class="card-thumbnail">
-                    <img src="https://img.youtube.com/vi/sp4yamTUNrw/maxresdefault.jpg" alt="محاضرة الفيزياء">
-                    <div class="play-icon-overlay">▶</div>
-                </div>
-                <div class="card-info">
-                    <span class="video-tag">مادة الفيزياء</span>
-                    <h2 class="video-title">محاضرة المراجعة النهائية والحل الشامل</h2>
-                    <p class="video-desc">شرح تفصيلي ومراجعة شاملة لجميع أجزاء المنهج مع حل الأسئلة المتوقعة.</p>
-                </div>
-            </a>
+    <div class="cards-grid">
+        <a href="Egyptian-Project.html" class="card">
+            <div class="card-icon">🎬</div>
+            <h3>Egyptian Project</h3>
+            <p>عرض تقديمي متطور</p>
+        </a>
 
-            <a href="Egyptian-Project.html" class="video-card">
-                <div class="card-thumbnail">
-                    <img src="https://img.youtube.com/vi/RYPyrVDTZT0/maxresdefault.jpg" alt="Egyptian-Project">
-                    <div class="play-icon-overlay">▶</div>
-                </div>
-                <div class="card-info">
-                    <span class="video-tag">ثقافة وفنون</span>
-                    <h2 class="video-title">Egyptian Project - Menen Aguibak</h2>
-                    <p class="video-desc">عرض حي ومميز من مهرجان Arabesques لفرقة مشروع مصري.</p>
-                </div>
-            </a>
-
-        </div>
+        <a href="aho.da.elsar.html" class="card">
+            <div class="card-icon">🎧</div>
+            <h3>أهو ده اللي صار</h3>
+            <p>مشغل الموسيقى المخصص</p>
+        </a>
     </div>
 
 </body>
