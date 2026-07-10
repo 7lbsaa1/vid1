@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egyptian Project - منصة حلبسة</title>
+    <title>محاضرة الفيزياء - المراجعة النهائية</title>
     
     <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/player.css">
@@ -40,6 +40,12 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+        
+        /* 💡 خدعة إخفاء شعار يوتيوب المائي: تكبير الفيديو بنسبة 5% لقص الأطراف التي يظهر بها الشعار */
+        #yt-iframe {
+            transform: scale(1.05) !important;
+            pointer-events: none !important; /* منع النقر عليه نهائياً */
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -47,6 +53,7 @@
     <div id="player-container" class="player-wrapper skeleton-loading">
         
         <div id="loader">جاري تهيئة المشغل...</div>
+        
         <div id="yt-iframe"></div>
 
         <div class="custom-controls" dir="ltr">
@@ -85,13 +92,13 @@
     </div>
 
     <script>
-        // 1. معرف الفيديو الجديد
-        window.CUSTOM_VIDEO_ID = 'C4UKWmUFBxQ'; 
+        // 1. معرف فيديو الفيزياء (إذا كان لديك ID مختلف ضعه هنا)
+        window.CUSTOM_VIDEO_ID = 'sp4yamTUNrw'; 
         
-        // تغيير مفتاح الذاكرة ليبدأ العد من جديد مع الفيديو الجديد
-        window.CUSTOM_STORAGE_KEY = 'vid_progress_C4UKWmUFBxQ';
+        // 2. مفتاح الذاكرة الخاص بمحاضرة الفيزياء (منفصل عن باقي الفيديوهات)
+        window.CUSTOM_STORAGE_KEY = 'vid_progress_physics_final';
 
-        // 2. كود الحماية الصارم: منع أزرار فحص العنصر والمطور
+        // 3. كود الحماية الصارم: منع أزرار فحص العنصر والمطور
         document.addEventListener('keydown', function(e) {
             // منع زر F12
             if (e.key === 'F12' || e.keyCode === 123) {
