@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أهو ده اللي صار - فيروز</title>
+    
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            user-select: none; 
+            -webkit-user-select: none;
+        }
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .skeleton-loading {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.5s infinite linear;
+        }
+        @keyframes skeleton-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* إخفاء الشعار المائي ليوتيوب */
+        #yt-iframe {
+            transform: scale(1.05) !important;
+            pointer-events: none !important; 
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div id="player-container" class="player-wrapper skeleton-loading">
+        
+        <div id="loader">جاري تهيئة مسار الصوت...</div>
+        <div id="yt-iframe"></div>
+
+        <div class="custom-controls" dir="ltr">
+            
+            <div id="progress-container" class="progress-container">
+                <div id="progress-bar" class="progress-bar">
+                    <div id="progress-thumb" class="progress-thumb"></div>
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <div class="controls-left">
+                    <button id="play-pause-btn" class="control-btn" title="تشغيل / إيقاف (K)">▶</button>
+                    <div class="volume-container">
+                        <button id="mute-btn" class="control-btn" title="كتم الصوت (M)">🔊</button>
+                        <input type="range" id="volume-slider" min="0" max="100" value="100">
+                    </div>
+                    <div class="time-display">
+                        <span id="current-time">00:00</span> / <span id="duration">00:00</span>
+                    </div>
+                </div>
+
+                <div class="controls-right">
+                    <select id="playback-speed" class="control-select" title="سرعة التشغيل">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                    <button id="pip-btn" class="control-btn" title="النافذة العائمة">⛶</button>
+                    <button id="theater-btn" class="control-btn" title="وضع المسرح (T)">🎦</button>
+                    <button id="fullscreen-btn" class="control-btn" title="ملء الشاشة (F)">⛶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. المعرف الخاص بأغنية فيروز
+        window.CUSTOM_VIDEO_ID = 'aoYDq-meq1w'; 
+        
+        // 2. ذاكرة حفظ مسار أغنية فيروز
+        window.CUSTOM_STORAGE_KEY = 'vid_progress_aho_da_elsar_fairoz';
+
+        // 3. نظام منع الاختصارات وأدوات المطور
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+                return false;
+            }
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/keyboard.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
